@@ -1,0 +1,214 @@
+{
+  "project_info": {
+    "project_number": "865762343936",
+    "project_id": "x-mat-7455b",
+    "storage_bucket": "x-mat-7455b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865762343936:android:5d4dd6cdb28816ca5dece5",
+        "android_client_info": {
+          "package_name": "dashboard.xmat.se"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865762343936-3runbllbhdkn5lo2j0k44j5te2opogng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dashboard.xmat.se",
+            "certificate_hash": "8e41d236fdb730aac8229c104e643a821f39c0db"
+          }
+        },
+        {
+          "client_id": "865762343936-77tq4sp24mjdjqhiscs9qduvfk0ffs29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dashboard.xmat.se",
+            "certificate_hash": "8159ce2b52a72b64391454a582addbf55bfeab1d"
+          }
+        },
+        {
+          "client_id": "865762343936-hhbp74sgcr7rnjfks8otoaivmq2i9k0k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dashboard.xmat.se",
+            "certificate_hash": "1ab45a2c99cfc078738167daa1f522753fe4306d"
+          }
+        },
+        {
+          "client_id": "865762343936-olnfj084qr9gate9ud5pd29v5gat73as.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dashboard.xmat.se",
+            "certificate_hash": "4857963183ebc198a8268638e29313150c4a431a"
+          }
+        },
+        {
+          "client_id": "865762343936-9648gritp1b8rlvr512804410ie9fb3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC737ni3POOd6fL_DajBBYjHDrb5ilquz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865762343936-9648gritp1b8rlvr512804410ie9fb3l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "865762343936-5875qif3ocmaohhtfvo2a4dr5cp805pl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dashboard.xmat.se"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865762343936:android:fbc1d30127b67d965dece5",
+        "android_client_info": {
+          "package_name": "edit.dashboard.xmat.se"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865762343936-2ofdqud3f2vnjb6g07kn43dv1joajg6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edit.dashboard.xmat.se",
+            "certificate_hash": "8e41d236fdb730aac8229c104e643a821f39c0db"
+          }
+        },
+        {
+          "client_id": "865762343936-d7l7q78bqbmuibv9fcv4mbu3ufgtijid.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edit.dashboard.xmat.se",
+            "certificate_hash": "8159ce2b52a72b64391454a582addbf55bfeab1d"
+          }
+        },
+        {
+          "client_id": "865762343936-dmqghb4v1t8ci8roqdv3agkcq9jce6kh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edit.dashboard.xmat.se",
+            "certificate_hash": "1ab45a2c99cfc078738167daa1f522753fe4306d"
+          }
+        },
+        {
+          "client_id": "865762343936-iu7qi542q126f2rm8t98r267joq5pgm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edit.dashboard.xmat.se",
+            "certificate_hash": "4857963183ebc198a8268638e29313150c4a431a"
+          }
+        },
+        {
+          "client_id": "865762343936-9648gritp1b8rlvr512804410ie9fb3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC737ni3POOd6fL_DajBBYjHDrb5ilquz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865762343936-9648gritp1b8rlvr512804410ie9fb3l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "865762343936-5875qif3ocmaohhtfvo2a4dr5cp805pl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dashboard.xmat.se"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865762343936:android:b1d85e8d9b49959a5dece5",
+        "android_client_info": {
+          "package_name": "info.xmat.se"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865762343936-frh4oh0mri0il5t9e05cs0ahbgael3qc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.xmat.se",
+            "certificate_hash": "8159ce2b52a72b64391454a582addbf55bfeab1d"
+          }
+        },
+        {
+          "client_id": "865762343936-hlrke47e0mucf7981vtohadkpj9iv991.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.xmat.se",
+            "certificate_hash": "8e41d236fdb730aac8229c104e643a821f39c0db"
+          }
+        },
+        {
+          "client_id": "865762343936-obmpp15f5kme5l6p1210a9u5v9c00vb1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.xmat.se",
+            "certificate_hash": "1ab45a2c99cfc078738167daa1f522753fe4306d"
+          }
+        },
+        {
+          "client_id": "865762343936-rh67v9d3fj0e352h0brbh5vnl6bpve17.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.xmat.se",
+            "certificate_hash": "4857963183ebc198a8268638e29313150c4a431a"
+          }
+        },
+        {
+          "client_id": "865762343936-9648gritp1b8rlvr512804410ie9fb3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC737ni3POOd6fL_DajBBYjHDrb5ilquz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865762343936-9648gritp1b8rlvr512804410ie9fb3l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "865762343936-5875qif3ocmaohhtfvo2a4dr5cp805pl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dashboard.xmat.se"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
