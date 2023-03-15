@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datawedgeflutter/pages/pickup_cart_page_locally.dart';
+import 'package:datawedgeflutter/pages/pickup_manuel_order_page_locally.dart';
 import 'package:datawedgeflutter/widgets/products_controller/new_inc_dec_but.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

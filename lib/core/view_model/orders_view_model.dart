@@ -13,6 +13,7 @@ class OrdersViewModel extends GetxController {
   RxList<ProductModel> orderProductList = <ProductModel>[].obs;
   String orderID = '';
   RxString find = ''.obs;
+  RxBool loading = false.obs;
 
   @override
   void onInit() {
@@ -21,6 +22,8 @@ class OrdersViewModel extends GetxController {
   }
 
   Future<RxList<OrderModel>> getAllOrders() async {
+    loading.value=true;
+
     ordersList.clear();
       FirebaseFirestore.instance
           .collection('orders')
@@ -43,6 +46,7 @@ class OrdersViewModel extends GetxController {
       });
 
     update();
+    loading.value=false;
 
     return ordersList;
   }

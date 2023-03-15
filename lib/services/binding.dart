@@ -11,7 +11,6 @@ import '../core/view_model/manuel_orders_view_model.dart';
 import '../core/view_model/orders_view_model.dart';
 import '../core/view_model/products_view_model.dart';
 import '../core/view_model/users_view_model.dart';
-import '../pages/pickup_cart_page.dart';
 
 class Binding extends Bindings{
   @override

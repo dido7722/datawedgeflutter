@@ -1,17 +1,18 @@
 import 'package:bottom_nav_layout/bottom_nav_layout.dart';
 import 'package:datawedgeflutter/Tabs/orders_tab_new.dart';
 import 'package:datawedgeflutter/Tabs/select_user.dart';
-import 'package:datawedgeflutter/pages/pickup_cart_page_locally.dart';
+import 'package:datawedgeflutter/pages/pickup_manuel_order_page_locally.dart';
+import 'package:datawedgeflutter/pages/pickup_order_page_new_locally.dart';
 import 'package:datawedgeflutter/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'Tabs/manuel_orders_tab.dart';
+import 'Tabs/manuel_orders_tab_locally.dart';
+import 'Tabs/orders_tab_new_locally.dart';
 import 'Tabs/products_tab.dart';
 import 'Tabs/users_tab.dart';
 import 'core/view_model/auth_view_model.dart';
 import 'pages/ameen_products_import.dart';
 import 'pages/pick_order_page_manuel.dart';
-import 'pages/pickup_cart_page.dart';
 import 'pages/pickup_order_page_barcode.dart';
 import 'pages/search_page_2.dart';
 import 'widgets/controller/constants.dart';
@@ -155,16 +156,16 @@ class ManuelOrdersNavigator extends StatelessWidget {
             builder: (BuildContext context) {
               switch (settings.name) {
                 case '/ManuelOrdersTab':
-                  return const ManuelOrdersTab();
+                  return const ManuelOrdersTabLocally();
                 case '/SelectUserOrder':
                   return  SelectUserOrder();
-                case '/PickOrderPageLocally':
-                  return PickOrderPageLocally();
+                case '/PickManuelOrderPageLocally':
+                  return PickManuelOrderPageLocally();
                 case '/SearchPage':
                   return SearchPage();
 
                 default:
-                  return const ManuelOrdersTab();
+                  return const ManuelOrdersTabLocally();
               }
             });
       },
@@ -187,16 +188,21 @@ class OrdersNavigator extends StatelessWidget {
             builder: (BuildContext context) {
               switch (settings.name) {
                 case '/OrdersTab':
-                  return  OrdersTabNew();
+                  // return  OrdersTabNew();
+                  return  OrdersTabNewLocally();
                 case '/PickOrderPageManuel':
                 return const PickOrderPageManuel();
+                case '/PickOrderPageNewLocally':
+                return  PickOrderPageNewLocally();
+
                 case '/PickOrderPageBarcode':
                 return  PickOrderPageBarcode();
                 case '/SearchPage2':
                   return SearchPage2();
 
                 default:
-                  return  OrdersTabNew();
+                  // return  OrdersTabNew();
+                  return  OrdersTabNewLocally();
               }
             });
       },

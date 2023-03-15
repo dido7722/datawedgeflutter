@@ -18,14 +18,14 @@ import '../widgets/controller/constants.dart';
 import '../widgets/controller/custom_action_bar.dart';
 import '../widgets/pick_order_controller/product_card_pick_order_kund.dart';
 
-class PickOrderPageLocally extends StatefulWidget {
-  PickOrderPageLocally({Key? key}) : super(key: key);
+class PickManuelOrderPageLocally extends StatefulWidget {
+  PickManuelOrderPageLocally({Key? key}) : super(key: key);
 
   @override
-  State<PickOrderPageLocally> createState() => _PickOrderPageLocallyState();
+  State<PickManuelOrderPageLocally> createState() => _PickManuelOrderPageLocallyState();
 }
 
-class _PickOrderPageLocallyState extends State<PickOrderPageLocally> {
+class _PickManuelOrderPageLocallyState extends State<PickManuelOrderPageLocally> {
   final appSetting = GetStorage(); // instance of getStorage class
 
   final RxString barcodeCode = ''.obs;

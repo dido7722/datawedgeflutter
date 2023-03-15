@@ -52,6 +52,8 @@ class ProductModel {
     required this.barcode2,
     required this.barcode3,
     required this.countQty,
+    required this.realQty,
+    required this.finishPicked,
 
   });
   ProductModel.fromSnapshot(
@@ -156,7 +158,7 @@ class ProductModel {
         commentQty.value=snapshot['commentQty']??'';
       }
       if(snapshot.containsKey('realQty')){
-        commentQty.value=snapshot['realQty']??0;
+        realQty.value=snapshot['realQty']??0;
       }
 
     if(snapshot.containsKey('finishPicked')){
@@ -196,6 +198,8 @@ class ProductModel {
   'barcode2':product.barcode2.value,
   'barcode3':product.barcode3.value,
   'countQty':product.countQty,
+    'realQty':product.realQty.value,
+    'finishPicked':product.finishPicked.value,
 
 };
 

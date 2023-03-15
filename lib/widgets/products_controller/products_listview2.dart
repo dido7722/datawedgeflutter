@@ -252,7 +252,7 @@ class _ItemCardState extends State<ItemCard> {
                               }catch(e){
                                 qty=1;
                               }
-                              FirebaseServices().addProductToOrder(orderId:widget.orderModel.id,userID:widget.orderModel.userID,commentQty:widget.orderModel.comment,realQty:qty,productId:widget.productModel[widget.index].id,finishPicked: false,pallNr: 0);
+                              FirebaseServices().addEditProductInOrder(orderId:widget.orderModel.id,userID:widget.orderModel.userID,qty:qty,productId:widget.productModel[widget.index].id,finishPicked: false,pallNr: 0,isAdd:true,realQty: 0);
 
                               Get.back();
                               _showToast(context);

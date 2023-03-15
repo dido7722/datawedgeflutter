@@ -3,6 +3,7 @@ import 'package:customizable_counter/customizable_counter.dart';
 import 'package:datawedgeflutter/core/view_model/products_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,8 +11,8 @@ import '../../core/model/product_model.dart';
 import '../../services/firebase_services.dart';
 import '../controller/constants.dart';
 
-class ProductCardPickOrderSecond extends StatefulWidget {
-  const ProductCardPickOrderSecond(
+class ProductCardPickOrderNew extends StatefulWidget {
+  const ProductCardPickOrderNew(
       {required this.productModel,
       required this.index,
       required this.userId,
@@ -26,12 +27,14 @@ class ProductCardPickOrderSecond extends StatefulWidget {
   final RxString findCode;
 
   @override
-  State<ProductCardPickOrderSecond> createState() =>
-      _ProductCardPickOrderSecondState();
+  State<ProductCardPickOrderNew> createState() =>
+      _ProductCardPickOrderNewState();
 }
 
-class _ProductCardPickOrderSecondState
-    extends State<ProductCardPickOrderSecond> {
+class _ProductCardPickOrderNewState
+    extends State<ProductCardPickOrderNew> {
+  final appSetting = GetStorage(); // instance of getStorage class
+
   RxInt oldQty =0.obs;
   RxInt oldRealQty=0.obs;
   ProductsViewModel productsViewModel=Get.find();
@@ -68,22 +71,41 @@ class _ProductCardPickOrderSecondState
             barrierDismissible: false,
             radius: 30,
             onConfirm: () async{
-              if(oldRealQty !=newRealQty) {
-                await  FirebaseServices().updatePickedOrder(orderId:widget.orderId,userID:widget.userId,productId:widget.productModel[widget.index].id,finishPicked: false,pallNr: 0,realQty:newRealQty.value, commentQty: '');
+              if(newRealQty.value> newQty.value ) {
+                _showToast1(context);
+              }else{
+                if (oldRealQty != newRealQty) {
+                  if (newRealQty == newQty) {
+                    widget.productModel[widget.index].finishPicked.value = true;
+                  } else {
+                    widget.productModel[widget.index].finishPicked.value =
+                    false;
+                  }
+                  widget.productModel[widget.index].realQty.value =
+                      newRealQty.value;
+                  productsViewModel.update();
+                  appSetting.write(productsViewModel.keyValue,
+                      ProductModel.encode(productsViewModel.productsLocal));
+                  _showToast(context);
+                }
+
+                if (oldQty != newQty) {
+                  if (newQty == newRealQty) {
+                    widget.productModel[widget.index].finishPicked.value = true;
+                  } else {
+                    widget.productModel[widget.index].finishPicked.value =
+                    false;
+                  }
+                  widget.productModel[widget.index].qty.value = newQty.value;
+                  productsViewModel.update();
+                  appSetting.write(productsViewModel.keyValue,
+                      ProductModel.encode(productsViewModel.productsLocal));
+                  _showToast(context);
+                }
+
               }
-            if(oldQty != newQty) {
-              await FirebaseServices().addEditProductInOrder(
-                  orderId: widget.orderId,
-                  userID: widget.userId,
-                  qty: newQty.value,
-                  productId: widget.productModel[widget.index].id,
-                  finishPicked: false,
-                  pallNr: 0,
-                  isAdd: false,
-                  realQty: oldRealQty.value);
-              _showToast(context);
-            }
-            Get.back();
+              Get.back();
+
             },
             content:    Column(
               children: [
@@ -173,8 +195,6 @@ class _ProductCardPickOrderSecondState
           await   updateBarcode().then((value) => list=value);
           Get.back(closeOverlays: true);
           Get.defaultDialog(title: list[0],middleText: list[1],backgroundColor: list[2]=='true'?Colors.greenAccent:Colors.redAccent);
-
-          // Get.defaultDialog(title: 'list[0]',middleText: 'list[1]');
         },
         child: Container(
           height: Get.height * 0.15,
@@ -262,14 +282,9 @@ class _ProductCardPickOrderSecondState
                         clipBehavior: Clip.none,
                         onPressed: () {
                           finishPicked.value = false;
-                          FirebaseServices().updatePickedOrder(
-                              orderId: widget.orderId,
-                              userID: widget.userId,
-                              commentQty: commentQty.value,
-                              realQty: oldRealQty.value,
-                              productId: widget.productModel[widget.index].id,
-                              finishPicked: finishPicked.value,
-                              pallNr: pallNr.value);
+                          appSetting.write(productsViewModel.keyValue,
+                              ProductModel.encode(productsViewModel.productsLocal));
+
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.lightGreen,
@@ -299,18 +314,10 @@ class _ProductCardPickOrderSecondState
                           clipBehavior: Clip.none,
                           onPressed: () {
                             finishPicked.value = true;
-                            if (oldRealQty.value.isEqual(0)) {
                               oldRealQty.value = oldQty.value;
-                            }
+                            appSetting.write(productsViewModel.keyValue,
+                                ProductModel.encode(productsViewModel.productsLocal));
 
-                            FirebaseServices().updatePickedOrder(
-                                orderId: widget.orderId,
-                                userID: widget.userId,
-                                commentQty: commentQty.value,
-                                realQty: oldRealQty.value,
-                                productId: widget.productModel[widget.index].id,
-                                finishPicked: finishPicked.value,
-                                pallNr: pallNr.value);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.lightGreen,
@@ -337,14 +344,9 @@ class _ProductCardPickOrderSecondState
                           onPressed: () {
                             oldRealQty.value = 0;
                             finishPicked.value = true;
-                            FirebaseServices().updatePickedOrder(
-                                orderId: widget.orderId,
-                                userID: widget.userId,
-                                commentQty: commentQty.value,
-                                realQty: oldRealQty.value,
-                                productId: widget.productModel[widget.index].id,
-                                finishPicked: finishPicked.value,
-                                pallNr: pallNr.value);
+                            appSetting.write(productsViewModel.keyValue,
+                                ProductModel.encode(productsViewModel.productsLocal));
+
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.redAccent,
@@ -406,14 +408,8 @@ class _ProductCardPickOrderSecondState
                 onDoubleTap: () {
                   if (!finishPicked.value) {
                     oldRealQty.value = oldQty.value;
-                    FirebaseServices().updatePickedOrder(
-                        orderId: widget.orderId,
-                        userID: widget.userId,
-                        commentQty: commentQty.value,
-                        realQty: oldRealQty.value,
-                        productId: widget.productModel[widget.index].id,
-                        finishPicked: finishPicked.value,
-                        pallNr: pallNr.value);
+                    appSetting.write(productsViewModel.keyValue,
+                        ProductModel.encode(productsViewModel.productsLocal));
                   }
                 },
                 child: Column(
@@ -464,6 +460,16 @@ class _ProductCardPickOrderSecondState
         content: Text('${widget.productModel[widget.index].names[1]}  ${widget.productModel[widget.index].size[0]}'),
         duration:const Duration(milliseconds: 2500),
         action: SnackBarAction(label: 'تم التعديل الى $oldQty صندوق', onPressed: scaffold.hideCurrentSnackBar,textColor: Colors.white,),
+      ),
+    );
+  }
+  void _showToast1(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text('لا يمكنك تعبئة كمية اكثر من المطلوبة'),
+        duration:const Duration(milliseconds: 2500),
+        action: SnackBarAction(label: '${widget.productModel[widget.index].names[1]}  ${widget.productModel[widget.index].size[0]}', onPressed: scaffold.hideCurrentSnackBar,textColor: Colors.white,),
       ),
     );
   }

@@ -24,6 +24,7 @@ class OrderProductsViewModel extends GetxController {
   final ProductsViewModel _productsViewModel=Get.find();
 
 
+
   getProducts({required String userID,required String orderID}) async {
     totalProduct.value=0;
 
@@ -39,6 +40,9 @@ class OrderProductsViewModel extends GetxController {
     for (var element in list) {
       _productsList.add(ProductModel.fromSnapshotOrder(element));
       _productsList.last.idAmeen=_productsViewModel.productsList.where((p0) => p0.id==element['id']).first.idAmeen;
+      _productsList.last.barcode1=_productsViewModel.productsList.where((p0) => p0.id==element['id']).first.barcode1;
+      _productsList.last.barcode2=_productsViewModel.productsList.where((p0) => p0.id==element['id']).first.barcode2;
+      _productsList.last.barcode3=_productsViewModel.productsList.where((p0) => p0.id==element['id']).first.barcode3;
     }
 
     if(querySnapshot.docs.where((element) => element.id==orderID).first.data().toString().contains('items_qty')){
@@ -79,6 +83,11 @@ class OrderProductsViewModel extends GetxController {
         list=element.get('items');
         for (var item in list) {
           retVal.add(ProductModel.fromSnapshotOrder(item));
+          retVal.last.idAmeen=_productsViewModel.productsList.where((p0) => p0.id==item['id']).first.idAmeen;
+          retVal.last.barcode1=_productsViewModel.productsList.where((p0) => p0.id==item['id']).first.barcode1;
+          retVal.last.barcode2=_productsViewModel.productsList.where((p0) => p0.id==item['id']).first.barcode2;
+          retVal.last.barcode3=_productsViewModel.productsList.where((p0) => p0.id==item['id']).first.barcode3;
+
         }
         if(element.data().toString().contains('items_qty')){
             listQty = element.get("items_qty");

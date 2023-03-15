@@ -1,4 +1,3 @@
-import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:get/get.dart';
@@ -6,12 +5,10 @@ import 'package:get/get.dart';
 import '../core/model/order_model.dart';
 import '../core/view_model/manuel_orders_view_model.dart';
 import '../core/view_model/products_view_model.dart';
-import '../widgets/controller/constants.dart';
-import '../widgets/controller/custom_action_bar_orders.dart';
-import '../widgets/orders_controller/manuel_order_card.dart';
+import '../widgets/orders_controller/manuel_order_card_locally.dart';
 
-class ManuelOrdersTab extends GetWidget<ManuelOrdersViewModel> {
-  const ManuelOrdersTab({Key? key}) : super(key: key);
+class ManuelOrdersTabLocally extends GetWidget<ManuelOrdersViewModel> {
+  const ManuelOrdersTabLocally({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +16,6 @@ class ManuelOrdersTab extends GetWidget<ManuelOrdersViewModel> {
       appBar: AppBar(
         title: Text('طلبات يدوية'),
         actions: [
-
           PopupMenuButton(
             // add icon, by default "3 dot" icon
             icon: Icon(Icons.add),
@@ -37,7 +33,6 @@ class ManuelOrdersTab extends GetWidget<ManuelOrdersViewModel> {
                 }
               }
           ),
-
         ],
 
 
@@ -105,7 +100,7 @@ class ManuelOrdersTab extends GetWidget<ManuelOrdersViewModel> {
                                               itemCount:
                                               processOrderList.length,
                                               itemBuilder: (_, index) {
-                                                return ManuelOrderCard(
+                                                return ManuelOrderCardLocally(
                                                   index: index,
                                                   orders: processOrderList
                                                       .toList(),

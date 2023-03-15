@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:datawedgeflutter/core/view_model/products_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -64,6 +65,7 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   final _focusNode = FocusNode();
+  ProductsViewModel productsViewModel=Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -108,16 +110,13 @@ class _ProductCardState extends State<ProductCard> {
                       await showDialog(
                           context: context,
                           builder: (_) => Dialog(
-                            child: Container(
-                                child: PhotoView(
-                                    imageProvider: CachedNetworkImageProvider(
-                                        widget.productModel[widget.index].image
-                                    )
-                                )
-                            ),
-                          )
-                      );
-
+                                child: Container(
+                                    child: PhotoView(
+                                        imageProvider:
+                                            CachedNetworkImageProvider(widget
+                                                .productModel[widget.index]
+                                                .image))),
+                              ));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -286,15 +285,20 @@ class _ProductCardState extends State<ProductCard> {
                         buttonColor: AppColors.activeColor,
                         barrierDismissible: false,
                         radius: 30,
-                        onConfirm: () {
-                          widget.productModel[widget.index].barcode1.value =
-                              barcode1;
+                        onConfirm: () async {
                           Future updateBarcode() =>
-                              FirebaseServices().updateBarcode(
+                              productsViewModel.updateBarcodes(
                                   productModel:
-                                      widget.productModel[widget.index]);
-                          updateBarcode();
+                                      widget.productModel[widget.index],
+                                  barcode1: barcode1,
+                                  barcode2: barcode2,
+                                  barcode3: barcode3,
+                              barcodeNr: 1);
+                          List list=[];
+                       await   updateBarcode().then((value) => list=value);
                           Get.back(closeOverlays: true);
+                          Get.defaultDialog(title: list[0],middleText: list[1],backgroundColor: list[2]=='true'?Colors.greenAccent:Colors.redAccent);
+
                         },
                         onCancel: () {
                           flag = false.obs;
@@ -308,7 +312,7 @@ class _ProductCardState extends State<ProductCard> {
                               barcode1 = value;
                             },
                             focusNode: _focusNode,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             maxLines: 1,
                             decoration: InputDecoration(
                                 labelText: 'barcode 1'.tr,
@@ -323,16 +327,15 @@ class _ProductCardState extends State<ProductCard> {
                         ]),
                       );
                     },
-                    child: Flexible(
-                      child: Container(
-                        width: 65,
-                        child: Text(
-                          widget.productModel[widget.index].barcode1.value,
-                          overflow: TextOverflow.clip,
-                          textScaleFactor: 1.0,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 65,
+                      child: Text(
+                        widget.productModel[widget.index].barcode1.value,
+                        overflow: TextOverflow.clip,
+                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -363,15 +366,19 @@ class _ProductCardState extends State<ProductCard> {
                         buttonColor: AppColors.activeColor,
                         barrierDismissible: false,
                         radius: 30,
-                        onConfirm: () {
-                          widget.productModel[widget.index].barcode2.value =
-                              barcode2;
+                        onConfirm: () async {
                           Future updateBarcode() =>
-                              FirebaseServices().updateBarcode(
+                              productsViewModel.updateBarcodes(
                                   productModel:
-                                      widget.productModel[widget.index]);
-                          updateBarcode();
+                                      widget.productModel[widget.index],
+                                  barcode1: barcode1,
+                                  barcode2: barcode2,
+                                  barcode3: barcode3,
+                              barcodeNr: 2);
+                          List list=[];
+                          await   updateBarcode().then((value) => list=value);
                           Get.back(closeOverlays: true);
+                          Get.defaultDialog(title: list[0],middleText: list[1],backgroundColor: list[2]=='true'?Colors.greenAccent:Colors.redAccent);
                         },
                         content:
                             Column(mainAxisSize: MainAxisSize.min, children: [
@@ -382,7 +389,7 @@ class _ProductCardState extends State<ProductCard> {
                               barcode2 = value;
                             },
                             focusNode: _focusNode,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             maxLines: 1,
                             decoration: InputDecoration(
                                 labelText: 'barcode 2'.tr,
@@ -397,16 +404,14 @@ class _ProductCardState extends State<ProductCard> {
                         ]),
                       );
                     },
-                    child: Flexible(
-                      child: Container(
-                        width: 65,
-                        child: Text(
-                          widget.productModel[widget.index].barcode2.value,
-                          overflow: TextOverflow.clip,
-                          textScaleFactor: 1.0,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
+                    child: Container(
+                      width: 65,
+                      child: Text(
+                        widget.productModel[widget.index].barcode2.value,
+                        overflow: TextOverflow.clip,
+                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -437,15 +442,19 @@ class _ProductCardState extends State<ProductCard> {
                         buttonColor: AppColors.activeColor,
                         barrierDismissible: false,
                         radius: 30,
-                        onConfirm: () {
-                          widget.productModel[widget.index].barcode3.value =
-                              barcode3;
+                        onConfirm: () async {
                           Future updateBarcode() =>
-                              FirebaseServices().updateBarcode(
+                              productsViewModel.updateBarcodes(
                                   productModel:
-                                      widget.productModel[widget.index]);
-                          updateBarcode();
+                                      widget.productModel[widget.index],
+                                  barcode1: barcode1,
+                                  barcode2: barcode2,
+                                  barcode3: barcode3,
+                              barcodeNr: 3);
+                          List list=[];
+                          await   updateBarcode().then((value) => list=value);
                           Get.back(closeOverlays: true);
+                          Get.defaultDialog(title: list[0],middleText: list[1],backgroundColor: list[2]=='true'?Colors.greenAccent:Colors.redAccent);
                         },
                         content:
                             Column(mainAxisSize: MainAxisSize.min, children: [
@@ -456,7 +465,7 @@ class _ProductCardState extends State<ProductCard> {
                               barcode3 = value;
                             },
                             focusNode: _focusNode,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             maxLines: 1,
                             decoration: InputDecoration(
                                 labelText: 'barcode 3'.tr,
@@ -471,16 +480,14 @@ class _ProductCardState extends State<ProductCard> {
                         ]),
                       );
                     },
-                    child: Flexible(
-                      child: Container(
-                        width: 65,
-                        child: Text(
-                          widget.productModel[widget.index].barcode3.value,
-                          overflow: TextOverflow.clip,
-                          textScaleFactor: 1.0,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
+                    child: Container(
+                      width: 65,
+                      child: Text(
+                        widget.productModel[widget.index].barcode3.value,
+                        overflow: TextOverflow.clip,
+                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(

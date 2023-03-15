@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../services/firebase_services.dart';
 import '../model/product_model.dart';
@@ -22,6 +23,12 @@ class ProductsViewModel extends GetxController {
   RxString findInEditPage = ''.obs;
   String _strSearch = '';
   String keyValue = '';
+  RxInt totalProduct=0.obs;
+  RxInt countProduct=0.obs;
+
+  RxInt countPalls=0.obs;
+
+  RxInt realTotalProduct=0.obs;
 
   set strSearch(String value) {
     _strSearch = value;
@@ -77,6 +84,7 @@ class ProductsViewModel extends GetxController {
     for (var element in querySnapshot.docs) {
       _productsList.add(ProductModel.fromSnapshot(element));
     }
+    // realTotalProduct.value=_productsList.fold(0, (previousValue, element) => previousValue +  element.qty.value);
 
     update();
     // _productsList.bindStream(productsStream()); //stream coming from firebase
@@ -84,6 +92,91 @@ class ProductsViewModel extends GetxController {
     findInEditPage.value='';
 
     _loading.value = false;
+  }
+
+ Future<List<String>> updateBarcodes({required ProductModel productModel,required String barcode1,required String barcode2, required String barcode3,required int barcodeNr}) async {
+    List<String> list=[];
+    list.clear();
+   switch (barcodeNr){
+     case 1:
+     if(barcode1.isEmpty){
+       productModel.barcode1.value=barcode1;
+       await FirebaseServices().updateBarcode(productModel: productModel);
+       list.add('تم');
+       list.add('تم حذف الكود 1');
+       list.add('true');
+
+     }else if(productsList.where((p0) =>
+     p0.barcode1.value == barcode1 || p0.barcode2.value == barcode1 || p0.barcode3.value == barcode1  &&
+         p0.idAmeen != productModel.idAmeen).isNotEmpty){
+       ProductModel productName=productsList.where((p0) =>
+       p0.barcode1.value == barcode1 || p0.barcode2.value == barcode1 || p0.barcode3.value == barcode1 && p0.idAmeen != productModel.idAmeen).first ;
+       list.add('خطأ');
+       list.add('الكود موجود مسبقاً للمادة ${productName.names[1]+productName.size[1]}');
+       list.add('false');
+     }else{
+       productModel.barcode1.value=barcode1;
+       await FirebaseServices().updateBarcode(productModel: productModel);
+       list.add('تم');
+       list.add('تم إضافة الكود 1 بنجاح');
+       list.add('true');
+     }
+       break;
+
+     case 2:
+     if(barcode2.isEmpty){
+       productModel.barcode2.value=barcode2;
+       await FirebaseServices().updateBarcode(productModel: productModel);
+       list.add('تم');
+       list.add('تم حذف الكود 2');
+       list.add('true');
+     }else  if(productsList.where((p0) =>
+         p0.barcode1.value == barcode2 || p0.barcode2.value == barcode2 || p0.barcode3.value == barcode2 &&
+         p0.idAmeen != productModel.idAmeen).isNotEmpty){
+       ProductModel productName=productsList.where((p0) =>
+       p0.barcode1.value == barcode2 || p0.barcode2.value == barcode2 || p0.barcode3.value == barcode2 && p0.idAmeen != productModel.idAmeen).first ;
+       list.add('خطأ');
+       list.add('الكود موجود مسبقاً للمادة ${productName.names[1]+productName.size[1]}');
+       list.add('false');
+     }else{
+       productModel.barcode2.value=barcode2;
+       await FirebaseServices().updateBarcode(productModel: productModel);
+       list.add('تم');
+       list.add('تم إضافة الكود 2 بنجاح');
+       list.add('true');
+
+     }
+       break;
+
+     case 3:
+     if(barcode3.isEmpty){
+       productModel.barcode3.value=barcode3;
+       await FirebaseServices().updateBarcode(productModel: productModel);
+       list.add('تم');
+       list.add('تم حذف الكود 3');
+       list.add('true');
+
+     }else  if(productsList.where((p0) =>
+         p0.barcode1.value == barcode3 || p0.barcode2.value == barcode3 || p0.barcode3.value == barcode3 &&
+         p0.idAmeen != productModel.idAmeen).isNotEmpty){
+       ProductModel productName=productsList.where((p0) =>
+       p0.barcode1.value == barcode3 || p0.barcode2.value == barcode3 || p0.barcode3.value == barcode3 && p0.idAmeen != productModel.idAmeen).first ;
+
+       list.add('خطأ');
+       list.add('الكود موجود مسبقاً للمادة ${productName.names[1]+productName.size[1]}');
+       list.add('false');
+     }else{
+       productModel.barcode3.value=barcode3;
+       await FirebaseServices().updateBarcode(productModel: productModel);
+       list.add('تم');
+       list.add('تم إضافة الكود 3 بنجاح');
+       list.add('true');
+
+     }
+       break;
+   }
+
+  return list;
   }
 
   filterProducts() async {

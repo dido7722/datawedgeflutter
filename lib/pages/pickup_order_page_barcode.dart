@@ -171,18 +171,6 @@ class _PickOrderPageBarcodeState extends State<PickOrderPageBarcode> {
                                           });
                                         },
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: IconButton(
-                                            onPressed: () {
-                                              Navigator.pushNamed(
-                                                  context, '/SearchPage2',arguments:OrderPageArguments(
-                                                  orderModel) );
-                                              // productsViewModel.update();
-                                            },
-                                            icon: Icon(Icons.add)),
-                                      ),
 
                                     ],
                                   ),
@@ -228,23 +216,42 @@ class _PickOrderPageBarcodeState extends State<PickOrderPageBarcode> {
                                     child: DefaultTabController(
                                       length: 2,
                                       child: Column(
+
                                         children: <Widget>[
-                                          ButtonsTabBar(
-                                            backgroundColor: AppColors.activeColor,
-                                            unselectedBackgroundColor: Colors.grey[300],
-                                            unselectedLabelStyle:
-                                            const TextStyle(color: Colors.black),
-                                            labelStyle: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                            tabs:  [
-                                              Tab(
-                                                icon: Icon(Icons.pause),
-                                                text: 'في الانتظار',
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              ButtonsTabBar(
+                                                backgroundColor: AppColors.activeColor,
+                                                unselectedBackgroundColor: Colors.grey[300],
+                                                unselectedLabelStyle:
+                                                const TextStyle(color: Colors.black),
+                                                labelStyle: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold),
+                                                tabs:  [
+                                                  Tab(
+                                                    icon: Icon(Icons.pause),
+                                                    text: 'في الانتظار',
+                                                  ),
+                                                  Tab(
+                                                    icon: Icon(Icons.done),
+                                                    text: "معالجة",
+                                                  ),
+
+                                                ],
                                               ),
-                                              Tab(
-                                                icon: Icon(Icons.done),
-                                                text: "معالجة",
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(
+                                                    horizontal: 8.0),
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pushNamed(
+                                                          context, '/SearchPage2',arguments:OrderPageArguments(
+                                                          orderModel) );
+                                                      // productsViewModel.update();
+                                                    },
+                                                    icon: Icon(Icons.add)),
                                               ),
 
                                             ],
@@ -319,9 +326,9 @@ class _PickOrderPageBarcodeState extends State<PickOrderPageBarcode> {
 
   void addItem(String value, OrderModel orderModel) {
 
-    if(controller.productsList.where((p0) => p0.idAmeen==value).isNotEmpty) {
+    if(controller.productsList.where((p0) => p0.idAmeen==value || p0.barcode1.value==value || p0.barcode2.value==value || p0.barcode3.value==value).isNotEmpty) {
       var product = controller.productsList
-          .where((p0) => p0.idAmeen == value)
+          .where((p0) => p0.idAmeen == value || p0.barcode1.value==value || p0.barcode2.value==value || p0.barcode3.value==value)
           .first;
       _itemName.value = product.names[1];
 

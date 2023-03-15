@@ -7,18 +7,19 @@ import 'package:sizer/sizer.dart';
 
 import '../../core/model/order_model.dart';
 import '../../core/model/product_model.dart';
+import '../../core/view_model/order_products_view_model.dart';
 import '../../services/firebase_services.dart';
 import '../../services/pages_arguments.dart';
 import '../controller/constants.dart';
 
-class ManuelOrderCard extends StatefulWidget {
-  const ManuelOrderCard({required this.index, required this.orders, Key? key})
+class OrderCardNewLocally extends StatefulWidget {
+  const OrderCardNewLocally({required this.index, required this.orders, Key? key})
       : super(key: key);
   final int index;
   final List<OrderModel> orders;
 
   @override
-  State<ManuelOrderCard> createState() => _ManuelOrderCardState();
+  State<OrderCardNewLocally> createState() => _OrderCardNewLocallyState();
 }
 
 var statusItems = [
@@ -32,9 +33,10 @@ var statusItems = [
   'cancelled'.tr,
 ];
 
-class _ManuelOrderCardState extends State<ManuelOrderCard> {
+class _OrderCardNewLocallyState extends State<OrderCardNewLocally> {
   final appSetting = GetStorage(); // instance of getStorage class
   ProductsViewModel productsViewModel = Get.find();
+  OrderProductsViewModel orderProductsViewModel =Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -123,14 +125,14 @@ class _ManuelOrderCardState extends State<ManuelOrderCard> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          PopupMenuItem(
-                            value: 3,
-                            child: PrimaryText(
-                              text: 'حذف الطلبية'.tr,
-                              size: 12.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          // PopupMenuItem(
+                          //   value: 3,
+                          //   child: PrimaryText(
+                          //     text: 'حذف الطلبية'.tr,
+                          //     size: 12.sp,
+                          //     fontWeight: FontWeight.w600,
+                          //   ),
+                          // ),
                           PopupMenuItem(
                             value: 4,
                             child: PrimaryText(
@@ -161,8 +163,12 @@ class _ManuelOrderCardState extends State<ManuelOrderCard> {
                         onSelected: (value) async {
                           switch (value) {
                             case 1:
+                              Future sss() => orderProductsViewModel.getProducts(
+                                  userID: widget.orders[widget.index].userID, orderID: widget.orders[widget.index].id);
+                              await   sss();
+
                               Navigator.pushNamed(
-                                  context, '/PickOrderPageLocally',
+                                  context, '/PickOrderPageNewLocally',
                                   arguments: OrderPageArguments(
                                       widget.orders[widget.index]));
 
@@ -173,121 +179,121 @@ class _ManuelOrderCardState extends State<ManuelOrderCard> {
                               appSetting.remove(keyValue);
                               productsViewModel.productsLocal.clear();
                               break;
-                            case 3:
-                              FirebaseServices()
-                                  .deleteOrder(widget.orders[widget.index].id);
-                              break;
+                            // case 3:
+                            //   FirebaseServices()
+                            //       .deleteOrder(widget.orders[widget.index].id);
+                            //   break;
 
-                            case 4:
-                              productsViewModel.productsLocal.clear();
-                              productsViewModel.keyValue =
-                                  'key-${widget.orders[widget.index].sort}';
-
-                              if (appSetting
-                                  .hasData(productsViewModel.keyValue)) {
-                                final String musicsString =
-                                    appSetting.read(productsViewModel.keyValue);
-                                productsViewModel.productsLocal
-                                    .addAll(ProductModel.decode(musicsString));
-                              } else {
-                                final String encodedData =
-                                    ProductModel.encode([]);
-                                appSetting.write(
-                                    productsViewModel.keyValue, encodedData);
-                              }
-                              if (productsViewModel.productsLocal.isNotEmpty) {
-                                FirebaseServices().updateOrder(
-                                    productsModel:
-                                        productsViewModel.productsLocal,
-                                    orderID: widget.orders[widget.index].id);
-                              } else {
-                                Get.snackbar("خطأ الطلب فارغ".tr,
-                                    "لم يتم تحديث الطلب".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent);
-                              }
-                              break;
-
-                            case 5:
-                              TextEditingController textEditingController =
-                                  TextEditingController();
-                              textEditingController.text =
-                                  widget.orders[widget.index].comment;
-                              Get.defaultDialog(
-                                title: 'ملاحظات'.tr,
-                                // backgroundColor: AppColors.lightGrayColor,
-                                // titleStyle: const TextStyle(color: Colors.white),
-                                // middleTextStyle: const TextStyle(color: Colors.white),
-                                textConfirm: "confirm".tr,
-                                textCancel: "cancel".tr,
-                                // confirmTextColor: Colors.white,
-                                buttonColor: AppColors.activeColor,
-                                barrierDismissible: false,
-                                radius: 30,
-                                onConfirm: () {
-                                  FirebaseServices().updateComment(
-                                      comment:
-                                          widget.orders[widget.index].comment,
-                                      orderID: widget.orders[widget.index].id);
-                                  Get.back();
-                                },
-                                content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      TextField(
-                                        controller: textEditingController,
-                                        onChanged: (value) {
-                                          widget.orders[widget.index].comment =
-                                              value;
-                                        },
-                                        keyboardType: TextInputType.multiline,
-                                        minLines:
-                                            1, //Normal textInputField will be displayed
-                                        maxLines:
-                                            5, // when user presses enter it will adapt to it
-                                        decoration: InputDecoration(
-                                            labelText: 'comments'.tr,
-                                            hintMaxLines: 2,
-                                            border: const OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.green,
-                                                    width: 4.0))),
-                                      ),
-                                      const SizedBox(
-                                        height: 30.0,
-                                      ),
-                                    ]),
-                              );
-                              break;
-                            case 6:
-                              productsViewModel.productsLocal.clear();
-                              productsViewModel.keyValue =
-                                  'key-${widget.orders[widget.index].sort}';
-
-                              if (appSetting
-                                  .hasData(productsViewModel.keyValue)) {
-                                final String musicsString =
-                                    appSetting.read(productsViewModel.keyValue);
-                                productsViewModel.productsLocal
-                                    .addAll(ProductModel.decode(musicsString));
-                              } else {
-                                final String encodedData =
-                                    ProductModel.encode([]);
-                                appSetting.write(
-                                    productsViewModel.keyValue, encodedData);
-                              }
-                              if (productsViewModel.productsLocal.isNotEmpty) {
-                                await FirebaseServices().makeFinalOrder(
-                                  productsList: productsViewModel.productsLocal,
-                                  orderModel: widget.orders[widget.index],
-                                );
-                              } else {
-                                Get.snackbar("خطأ الطلب فارغ".tr,
-                                    "لم يتم انشاء الطلب".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent);
-                              }
-                              break;
+                            // case 4:
+                            //   productsViewModel.productsLocal.clear();
+                            //   productsViewModel.keyValue =
+                            //       'key-${widget.orders[widget.index].sort}';
+                            //
+                            //   if (appSetting
+                            //       .hasData(productsViewModel.keyValue)) {
+                            //     final String musicsString =
+                            //         appSetting.read(productsViewModel.keyValue);
+                            //     productsViewModel.productsLocal
+                            //         .addAll(ProductModel.decode(musicsString));
+                            //   } else {
+                            //     final String encodedData =
+                            //         ProductModel.encode([]);
+                            //     appSetting.write(
+                            //         productsViewModel.keyValue, encodedData);
+                            //   }
+                            //   if (productsViewModel.productsLocal.isNotEmpty) {
+                            //     FirebaseServices().updateOrder(
+                            //         productsModel:
+                            //             productsViewModel.productsLocal,
+                            //         orderID: widget.orders[widget.index].id);
+                            //   } else {
+                            //     Get.snackbar("خطأ الطلب فارغ".tr,
+                            //         "لم يتم تحديث الطلب".tr,
+                            //         snackPosition: SnackPosition.BOTTOM,
+                            //         backgroundColor: Colors.redAccent);
+                            //   }
+                            //   break;
+                            //
+                            // case 5:
+                            //   TextEditingController textEditingController =
+                            //       TextEditingController();
+                            //   textEditingController.text =
+                            //       widget.orders[widget.index].comment;
+                            //   Get.defaultDialog(
+                            //     title: 'ملاحظات'.tr,
+                            //     // backgroundColor: AppColors.lightGrayColor,
+                            //     // titleStyle: const TextStyle(color: Colors.white),
+                            //     // middleTextStyle: const TextStyle(color: Colors.white),
+                            //     textConfirm: "confirm".tr,
+                            //     textCancel: "cancel".tr,
+                            //     // confirmTextColor: Colors.white,
+                            //     buttonColor: AppColors.activeColor,
+                            //     barrierDismissible: false,
+                            //     radius: 30,
+                            //     onConfirm: () {
+                            //       FirebaseServices().updateComment(
+                            //           comment:
+                            //               widget.orders[widget.index].comment,
+                            //           orderID: widget.orders[widget.index].id);
+                            //       Get.back();
+                            //     },
+                            //     content: Column(
+                            //         mainAxisSize: MainAxisSize.min,
+                            //         children: [
+                            //           TextField(
+                            //             controller: textEditingController,
+                            //             onChanged: (value) {
+                            //               widget.orders[widget.index].comment =
+                            //                   value;
+                            //             },
+                            //             keyboardType: TextInputType.multiline,
+                            //             minLines:
+                            //                 1, //Normal textInputField will be displayed
+                            //             maxLines:
+                            //                 5, // when user presses enter it will adapt to it
+                            //             decoration: InputDecoration(
+                            //                 labelText: 'comments'.tr,
+                            //                 hintMaxLines: 2,
+                            //                 border: const OutlineInputBorder(
+                            //                     borderSide: BorderSide(
+                            //                         color: Colors.green,
+                            //                         width: 4.0))),
+                            //           ),
+                            //           const SizedBox(
+                            //             height: 30.0,
+                            //           ),
+                            //         ]),
+                            //   );
+                            //   break;
+                            // case 6:
+                            //   productsViewModel.productsLocal.clear();
+                            //   productsViewModel.keyValue =
+                            //       'key-${widget.orders[widget.index].sort}';
+                            //
+                            //   if (appSetting
+                            //       .hasData(productsViewModel.keyValue)) {
+                            //     final String musicsString =
+                            //         appSetting.read(productsViewModel.keyValue);
+                            //     productsViewModel.productsLocal
+                            //         .addAll(ProductModel.decode(musicsString));
+                            //   } else {
+                            //     final String encodedData =
+                            //         ProductModel.encode([]);
+                            //     appSetting.write(
+                            //         productsViewModel.keyValue, encodedData);
+                            //   }
+                            //   if (productsViewModel.productsLocal.isNotEmpty) {
+                            //     await FirebaseServices().makeFinalOrder(
+                            //       productsList: productsViewModel.productsLocal,
+                            //       orderModel: widget.orders[widget.index],
+                            //     );
+                            //   } else {
+                            //     Get.snackbar("خطأ الطلب فارغ".tr,
+                            //         "لم يتم انشاء الطلب".tr,
+                            //         snackPosition: SnackPosition.BOTTOM,
+                            //         backgroundColor: Colors.redAccent);
+                            //   }
+                            //   break;
                           }
                         },
                       )

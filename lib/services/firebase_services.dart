@@ -31,7 +31,6 @@ class FirebaseServices {
 
   late CollectionReference productRef;
   late FirebaseAuth firebaseAuth;
-  // final AuthViewModel _authViewModel = Get.find();
   late CollectionReference manuelOrderRef;
   late CollectionReference orderRef;
   late CollectionReference userRef;
@@ -308,7 +307,7 @@ class FirebaseServices {
         dateValue: now.toString(),
         userName: orderModel.userName,
         sort: sort,
-        status: 'complete',
+        status: 'pending',
         productModel: productsList,
         comment: orderModel.comment,
         isReading:false, orderCount: orderCount.obs, orderQty: orderQty.obs,
@@ -342,30 +341,46 @@ class FirebaseServices {
   }
 
 
-  Future<void> addProductToOrder(
+  Future<void> addEditProductInOrder(
       {required String orderId,
         required String userID,
-        required String commentQty,
+        required int qty,
         required int realQty,
         required String productId,
         required bool finishPicked,
-        required int pallNr}) async {
+        required int pallNr,
+      required bool isAdd}) async {
     ProductsViewModel productsViewModel=Get.find();
     var ref = await FirebaseFirestore.instance
         .collection('orders')
         .doc(orderId);
-    ref.get().then((value) {
-      var addQTy = [];
+    ref.get().then((value) async {
       var removeItem = [];
-      if (value.data()!.containsKey('items')) {
+      var removeItemQty = [];
+      var addQTy = [];
+
+      if(isAdd){
         List oldList = value.data()!['items'];
+        List oldListQty = value.data()!['items_qty'];
+
         if (oldList.where((element) => element['id'] == productId).isNotEmpty) {
+
           removeItem.add(
               oldList.where((element) => element['id'] == productId).first);
-          ref.set({'items': FieldValue.arrayRemove(removeItem)},
+          removeItemQty.add(
+              oldListQty.where((element) => element['id'] == productId).first);
+
+          await  ref.set({'items': FieldValue.arrayRemove(removeItem)},
               SetOptions(merge: true));
-          removeItem.first['qty']+=realQty;
-          ref.set({'items': FieldValue.arrayUnion(removeItem)},
+          await  ref.set({'items_qty': FieldValue.arrayRemove(removeItemQty)},
+              SetOptions(merge: true));
+
+          removeItem.first['qty']+=qty;
+          removeItemQty.first['realQty']+=realQty;
+
+          await  ref.set({'items': FieldValue.arrayUnion(removeItem)},
+              SetOptions(merge: true));
+          await  ref.set({'items_qty': FieldValue.arrayUnion(removeItemQty)},
               SetOptions(merge: true));
 
         }
@@ -373,10 +388,49 @@ class FirebaseServices {
           List cartItemsToJson() =>
               productsViewModel.productsList.where((p0) => p0.id==productId).map((item) => item.toJson()).toList();
           ProductModel productModel=productsViewModel.productsList.where((p0) => p0.id==productId).first;
-          productModel.qty.value=realQty;
+          productModel.qty.value=qty;
           ref.set({'items': FieldValue.arrayUnion(cartItemsToJson())},
               SetOptions(merge: true));
+
+          addQTy.add({
+            'id': productId,
+            'realQty': realQty,
+            'commentQty': '',
+            'finishPicked': finishPicked,
+            'pallNr': pallNr
+          });
+          ref.set({'items_qty': FieldValue.arrayUnion(addQTy)},
+              SetOptions(merge: true));
         }
+      }
+      else{
+        if(qty==0){
+          if(value.data()!.containsKey('items_qty')){
+            List oldListQty = value.data()!['items_qty'];
+            if(oldListQty.where((element) => element['id'] == productId).isNotEmpty){
+              var removeItemQty = [];
+              removeItemQty.add(oldListQty.where((element) => element['id'] == productId).first);
+             await ref.set({'items_qty': FieldValue.arrayRemove(removeItemQty)},
+                  SetOptions(merge: true));
+            }
+          }
+
+        }
+
+        List oldList = value.data()!['items'];
+
+        if (oldList.where((element) => element['id'] == productId).isNotEmpty) {
+          removeItem.add(
+              oldList.where((element) => element['id'] == productId).first);
+          await    ref.set({'items': FieldValue.arrayRemove(removeItem)},
+              SetOptions(merge: true));
+          if(qty!=0) {
+            removeItem.first['qty']=qty;
+            await   ref.set({'items': FieldValue.arrayUnion(removeItem)},
+                SetOptions(merge: true));
+          }
+
+      }
       }
 
     });

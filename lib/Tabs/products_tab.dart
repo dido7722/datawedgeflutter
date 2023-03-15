@@ -263,11 +263,10 @@ class ProductsTab extends GetWidget<ProductsViewModel> {
                                                         .contains(
                                                             productsViewModel
                                                                 .find
-                                                                .value) &&
-                                                    p0.enabled)
+                                                                .value) )
                                                 .length
                                             : productsViewModel.productsList
-                                                .where((p0) => p0.enabled)
+
                                                 .length,
                                         itemBuilder: (_, index) {
                                           return Container(
@@ -287,13 +286,11 @@ class ProductsTab extends GetWidget<ProductsViewModel> {
                                                               .contains(
                                                                   productsViewModel
                                                                       .find
-                                                                      .value) &&
-                                                          p0.enabled)
+                                                                      .value) )
                                                       .toList()
                                                   : productsViewModel
                                                       .productsList
-                                                      .where(
-                                                          (p0) => p0.enabled)
+
                                                       .toList(),
                                             ),
                                           );
